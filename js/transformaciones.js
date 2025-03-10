@@ -90,7 +90,9 @@ function transformaciones(id){
                         colBoton.appendChild(regreso);
                         contenedor.appendChild(colBoton);
                    };
-               });
+               }).catch(error=>{
+                console.error("Error al obtener datos");
+            })
 };
 
 // Obtener el ID del personaje desde la URL
