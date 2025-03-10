@@ -91,7 +91,7 @@ function transformaciones(id){
                         contenedor.appendChild(colBoton);
                    };
                }).catch(error=>{
-                console.error("Error al obtener datos");
+                console.error("Error al obtener datos", error);
             })
 };
 
