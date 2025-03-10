@@ -1,0 +1,58 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.tamaño {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    object-fit: cover;
+    box-shadow: rgba(236, 233, 233, 0.1);
+    object-fit: contain;
+}
+
+.tamaño:hover{
+   transform: scale(1.2);
+}
+
+.fondo{
+    background-image: url(../img/logo-de-dbz-xyonlt5dof78uuut.jpg);
+    background-position: -2em, -3em;
+    border-radius: 0.5rem;
+}
+
+#personajes, .titulo{
+    text-align: center;
+}
+
+.logoDragon{
+    width: 25%;
+}
+
+.sinResultado{
+    width: 45%;
+    margin: 0 auto;
+    color: aliceblue;
+    background-color: rgb(102, 89, 89);
+}
+
+.row{
+    background-color: rgb(143, 142, 142);
+}
+.cajaBusqueda{
+    display: inline-block;
+    width: 100%;
+}
+
+.campoBusqueda{
+    border-radius: 0.5em;
+    padding: 0.2em;
+}
+
+.stiloBoton{
+    margin: 2em;
+    width: 5em;
+    height: 3em;
+}
