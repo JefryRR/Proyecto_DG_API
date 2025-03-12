@@ -56,3 +56,8 @@
     width: 5em;
     height: 3em;
 }
+
+#botones {
+    display: flex;
+    justify-content: center;
+}
