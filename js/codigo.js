@@ -92,50 +92,51 @@ function pruebaBoton(link) {
                 console.error("No se encontraron personajes.");
             }
 
-            const busqueda = document.getElementById("btnBuscar");
-            busqueda.addEventListener("click", () => {
-                const imprimirBusqueda = document.getElementById("resultado");
-                const campoBusqueda = document.getElementById("nombre");
-                const textoBusqueda = campoBusqueda.value.toLowerCase();
-                const tarjetas = document.querySelectorAll(".card");
-                let noHayresultado = false;
-                tarjetas.forEach((tarjeta) => {
-                    const nombreTarjeta = tarjeta.querySelector(".card-title").textContent.toLowerCase();
-                    if (nombreTarjeta.includes(textoBusqueda)) {
-                        imprimirBusqueda.appendChild(tarjeta);
-                        tarjeta.style.display = "flex";
-                        contenedor.style.display = "none";
-                        noHayresultado = true;
-                    } else {
-                        tarjeta.style.display = "none";
-                    }
-                });
-
-                const sinResultado = document.getElementById("resultado");
-                if (!noHayresultado) {
-                    const colBoton = document.createElement("div");
-                    colBoton.classList.add("col-12");
-                    const regreso = document.createElement("button");
-                    regreso.classList.add("stiloBoton");
-                    regreso.classList.add("btn", "btn-danger");
-                    regreso.innerHTML = "Volver";
-                    regreso.onclick = () => {
-                        window.location.href = "index.html";
-                    };
-
-                    const mensajeSinResultado = document.createElement("p");
-                    mensajeSinResultado.classList.add("text-center", "sinResultado");
-                    mensajeSinResultado.textContent = "No se encontraron resultados.";
-                    sinResultado.appendChild(mensajeSinResultado);
-                    colBoton.appendChild(regreso);
-                    sinResultado.appendChild(colBoton);
-                    busqueda.style.display = "none";
-                    campoBusqueda.style.display = "none";
-                }
-            });
 
             const imprimirBotones = document.getElementById("listaBoton");
             for (let i = 0; i < personaje.meta.totalPages; i++) {
+                const busqueda = document.getElementById("btnBuscar");
+                busqueda.addEventListener("click", () => {
+                    const imprimirBusqueda = document.getElementById("resultado");
+                    const campoBusqueda = document.getElementById("nombre");
+                    const textoBusqueda = campoBusqueda.value.toLowerCase();
+                    const tarjetas = document.querySelectorAll(".card");
+                    let noHayresultado = false;
+                    tarjetas.forEach((tarjeta) => {
+                        const nombreTarjeta = tarjeta.querySelector(".card-title").textContent.toLowerCase();
+                        if (nombreTarjeta.includes(textoBusqueda)) {
+                            imprimirBusqueda.appendChild(tarjeta);
+                            tarjeta.style.display = "flex";
+                            contenedor.style.display = "none";
+                            noHayresultado = true;
+                        } else {
+                            tarjeta.style.display = "none";
+                        }
+                    });
+    
+                    const sinResultado = document.getElementById("resultado");
+                    if (!noHayresultado) {
+                        const colBoton = document.createElement("div");
+                        colBoton.classList.add("col-12");
+                        const regreso = document.createElement("button");
+                        regreso.classList.add("stiloBoton");
+                        regreso.classList.add("btn", "btn-danger");
+                        regreso.innerHTML = "Volver";
+                        regreso.onclick = () => {
+                            window.location.href = "index.html";
+                        };
+    
+                        const mensajeSinResultado = document.createElement("p");
+                        mensajeSinResultado.classList.add("text-center", "sinResultado");
+                        mensajeSinResultado.textContent = "No se encontraron resultados.";
+                        sinResultado.appendChild(mensajeSinResultado);
+                        colBoton.appendChild(regreso);
+                        sinResultado.appendChild(colBoton);
+                        busqueda.style.display = "none";
+                        campoBusqueda.style.display = "none";
+                    }
+                });
+
                 const boton = document.createElement("li");
                 boton.classList.add("page-item");
                 boton.onclick = () => {
