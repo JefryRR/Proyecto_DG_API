@@ -17,7 +17,7 @@ function pruebaBoton(link) {
             const contenedor = document.getElementById("personajes");
 
             // Limpiar el contenedor antes de agregar nuevos personajes
-            contenedor.innerHTML = ""; 
+            contenedor.innerHTML = "";
 
             // Verificar si personaje.items está definido y es un array
             if (Array.isArray(personaje.items)) {
@@ -92,16 +92,39 @@ function pruebaBoton(link) {
                 console.error("No se encontraron personajes.");
             }
 
-
             const imprimirBotones = document.getElementById("listaBoton");
+            imprimirBotones.innerHTML = "";
+
+            const anterior = document.createElement("li");
+            anterior.classList.add("btn", "page-item", "page-link");
+            anterior.innerHTML = "<";
+            anterior.onclick = () => {
+                if (pagina > 1) {
+                    contenedor.innerHTML = "";  //limpiar tarjetas anteriores.
+                    pagina--;
+                    pruebaBoton(`https://dragonball-api.com/api/characters?page=${pagina}&limit=${cantidad}`);
+                }
+            };
+
+            imprimirBotones.appendChild(anterior);
+
+            const colBoton = document.createElement("div");
+            const regreso = document.createElement("button");
+            const mensajeSinResultado = document.createElement("p");
+            const inicio = document.getElementById('primera');
+            const final = document.getElementById('ultima');
+
             for (let i = 0; i < personaje.meta.totalPages; i++) {
+                const boton = document.createElement("li");
                 const busqueda = document.getElementById("btnBuscar");
                 busqueda.addEventListener("click", () => {
                     const imprimirBusqueda = document.getElementById("resultado");
                     const campoBusqueda = document.getElementById("nombre");
                     const textoBusqueda = campoBusqueda.value.toLowerCase();
                     const tarjetas = document.querySelectorAll(".card");
+                    const sinResultado = document.getElementById("resultado");
                     let noHayresultado = false;
+
                     tarjetas.forEach((tarjeta) => {
                         const nombreTarjeta = tarjeta.querySelector(".card-title").textContent.toLowerCase();
                         if (nombreTarjeta.includes(textoBusqueda)) {
@@ -110,66 +133,68 @@ function pruebaBoton(link) {
                             contenedor.style.display = "none";
                             noHayresultado = true;
                         } else {
-                            tarjeta.style.display = "none";
+                            if (!noHayresultado) {
+                                colBoton.classList.add("col-12");
+                                regreso.classList.add("stiloBoton");
+                                regreso.classList.add("btn", "btn-danger");
+                                regreso.innerHTML = "Volver";
+                                regreso.onclick = () => {
+                                window.location.href = `./index.html`;
+                                };
+                                mensajeSinResultado.classList.add("text-center", "sinResultado");
+                                mensajeSinResultado.textContent = "No se encontraron resultados.";
+                                sinResultado.appendChild(mensajeSinResultado);
+                                colBoton.appendChild(regreso);
+                                sinResultado.appendChild(colBoton);
+                                busqueda.style.display = "none";
+                                campoBusqueda.style.display = "none";
+                                tarjeta.style.display = "none";
+                                boton.style.display = "none";
+                                inicio.style.display = "none";
+                                final.style.display = "none";
+                                anterior.style.display = "none";
+                                siguiente.style.display = "none";
+                            };
                         }
                     });
-    
-                    const sinResultado = document.getElementById("resultado");
-                    if (!noHayresultado) {
-                        const colBoton = document.createElement("div");
-                        colBoton.classList.add("col-12");
-                        const regreso = document.createElement("button");
-                        regreso.classList.add("stiloBoton");
-                        regreso.classList.add("btn", "btn-danger");
-                        regreso.innerHTML = "Volver";
-                        regreso.onclick = () => {
-                            window.location.href = "index.html";
-                        };
-    
-                        const mensajeSinResultado = document.createElement("p");
-                        mensajeSinResultado.classList.add("text-center", "sinResultado");
-                        mensajeSinResultado.textContent = "No se encontraron resultados.";
-                        sinResultado.appendChild(mensajeSinResultado);
-                        colBoton.appendChild(regreso);
-                        sinResultado.appendChild(colBoton);
-                        busqueda.style.display = "none";
-                        campoBusqueda.style.display = "none";
-                    }
                 });
-
-                const boton = document.createElement("li");
-                boton.classList.add("page-item");
+                boton.classList.add("btn", "page-item", "page-link");
                 boton.onclick = () => {
-                    contenedor.innerHTML="";
-                    imprimirBotones.innerHTML="";
-                    pagina = i + 1; // Update the page number
-                    console.log(`Page changed to: ${pagina}`); // Debug log
-                    pruebaBoton(`https://dragonball-api.com/api/characters?page=${pagina}&limit=${cantidad}`); // Fetch new data
+                    contenedor.innerHTML = "";
+                    imprimirBotones.innerHTML = "";
+                    pagina = i + 1;
+                    pruebaBoton(`https://dragonball-api.com/api/characters?page=${pagina}&limit=${cantidad}`);
                 };
-
-                const enlaceBoton = document.createElement("a");
-                enlaceBoton.href = `https://dragonball-api.com/api/characters?page=${i + 1}&limit=${cantidad}`;
-                boton.classList.add("btn", "page-link");
                 boton.textContent = i + 1;
-                enlaceBoton.appendChild(boton);
                 imprimirBotones.appendChild(boton);
             };
 
 
-            const inicio = document.getElementById('primera');
+            const siguiente = document.createElement("li");
+            siguiente.classList.add("btn", "page-item", "page-link");
+            siguiente.innerHTML = ">";
+            siguiente.onclick = () => {
+                if (pagina < 6) {
+                    pagina++;
+                    pruebaBoton(`https://dragonball-api.com/api/characters?page=${pagina}&limit=${cantidad}`);
+                }
+            };
+            imprimirBotones.appendChild(siguiente);
+
             inicio.addEventListener('click', () => {
                 let newUrl = `https://dragonball-api.com/api/characters?page=1&limit=10`;
                 pruebaBoton(newUrl);
-                imprimirBotones.innerHTML="";
+                imprimirBotones.innerHTML = "";
             });
 
-            const final = document.getElementById('ultima');
             final.addEventListener('click', () => {
                 let newUrl = `https://dragonball-api.com/api/characters?page=6&limit=10`;
                 pruebaBoton(newUrl);
-                imprimirBotones.innerHTML="";
+                imprimirBotones.innerHTML = "";
             });
 
+            inicio.classList.add("btn");
+            final.classList.add("btn");
         })
         .catch(error => {
             console.error("No se pudo obtener la información de la API:", error);

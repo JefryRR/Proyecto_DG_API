@@ -85,7 +85,7 @@ function transformaciones(id){
                         regreso.classList.add("btn", "btn-danger");
                         regreso.innerHTML="Volver"; 
                         regreso.onclick= ()=>{
-                        window.location.href="index.html";
+                            window.history.back();
                         };
                         colBoton.appendChild(regreso);
                         contenedor.appendChild(colBoton);
