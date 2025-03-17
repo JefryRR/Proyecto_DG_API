@@ -73,7 +73,7 @@ function pruebaBoton(link) {
                     contenido6.classList.add("card-text");
                     contenido6.innerHTML = personaje.affiliation;
 
-                    card.appendChild(enlace);
+                    card.appendChild(enlace);       //carga la imágen
 
                     const datosTarjeta = document.createElement("div");
                     datosTarjeta.classList.add("card-body");
@@ -89,8 +89,8 @@ function pruebaBoton(link) {
                     contenedor.appendChild(tarjetas);
                 });
             } else {
-                console.error("No se encontraron personajes.");
-            }
+                console.error("Esto no es un arreglo, no se puede mostrar");                
+            };
 
             const imprimirBotones = document.getElementById("listaBoton");
             imprimirBotones.innerHTML = "";
@@ -100,62 +100,61 @@ function pruebaBoton(link) {
             anterior.innerHTML = "<";
             anterior.onclick = () => {
                 if (pagina > 1) {
-                    contenedor.innerHTML = "";  //limpiar tarjetas anteriores.
                     pagina--;
                     pruebaBoton(`https://dragonball-api.com/api/characters?page=${pagina}&limit=${cantidad}`);
-                }
+                };
             };
-
             imprimirBotones.appendChild(anterior);
 
-            const colBoton = document.createElement("div");
-            const regreso = document.createElement("button");
-            const mensajeSinResultado = document.createElement("p");
+            const ocultarBotones=document.getElementById("botones");
             const inicio = document.getElementById('primera');
             const final = document.getElementById('ultima');
+            const busqueda = document.getElementById("btnBuscar");
+            const imprimirBusqueda = document.getElementById("resultado");
+            const mensajeSinResultado = document.createElement("p");
+            const regreso = document.createElement("button");
+            regreso.classList.add("stiloBoton", "btn", "btn-danger");
+            regreso.innerHTML="Volver"; 
+
 
             for (let i = 0; i < personaje.meta.totalPages; i++) {
                 const boton = document.createElement("li");
-                const busqueda = document.getElementById("btnBuscar");
+                
                 busqueda.addEventListener("click", () => {
-                    const imprimirBusqueda = document.getElementById("resultado");
                     const campoBusqueda = document.getElementById("nombre");
                     const textoBusqueda = campoBusqueda.value.toLowerCase();
                     const tarjetas = document.querySelectorAll(".card");
                     const sinResultado = document.getElementById("resultado");
                     let noHayresultado = false;
 
-                    tarjetas.forEach((tarjeta) => {
+                    tarjetas.forEach(tarjeta => {
                         const nombreTarjeta = tarjeta.querySelector(".card-title").textContent.toLowerCase();
                         if (nombreTarjeta.includes(textoBusqueda)) {
+                            imprimirBotones.style.display="none";
                             imprimirBusqueda.appendChild(tarjeta);
                             tarjeta.style.display = "flex";
                             contenedor.style.display = "none";
-                            noHayresultado = true;
-                        } else {
-                            if (!noHayresultado) {
-                                colBoton.classList.add("col-12");
-                                regreso.classList.add("stiloBoton");
-                                regreso.classList.add("btn", "btn-danger");
-                                regreso.innerHTML = "Volver";
-                                regreso.onclick = () => {
-                                window.location.href = `./index.html`;
-                                };
-                                mensajeSinResultado.classList.add("text-center", "sinResultado");
-                                mensajeSinResultado.textContent = "No se encontraron resultados.";
-                                sinResultado.appendChild(mensajeSinResultado);
-                                colBoton.appendChild(regreso);
-                                sinResultado.appendChild(colBoton);
-                                busqueda.style.display = "none";
-                                campoBusqueda.style.display = "none";
-                                tarjeta.style.display = "none";
-                                boton.style.display = "none";
-                                inicio.style.display = "none";
-                                final.style.display = "none";
-                                anterior.style.display = "none";
-                                siguiente.style.display = "none";
+                            mensajeSinResultado.style.display = "none"; 
+
+                            regreso.onclick = () => {
+                            window.location.href = "./index.html";
                             };
-                        }
+
+                            ocultarBotones.style.display= "none";
+                            sinResultado.appendChild(regreso);
+                            noHayresultado = true;
+                        }else{
+                            if(!noHayresultado){
+                                contenedor.style.display ="none";
+                                mensajeSinResultado.classList.add("sinResultado", "d-flex");
+                                mensajeSinResultado.textContent = "No existen personajes con este nombre";
+                                ocultarBotones.style.display= "none";
+                                regreso.onclick = () => {
+                                window.location.href = "./index.html";}
+                                sinResultado.appendChild(mensajeSinResultado);    
+                                sinResultado.appendChild(regreso);            
+                            };
+                        };                     
                     });
                 });
                 boton.classList.add("btn", "page-item", "page-link");
@@ -177,7 +176,7 @@ function pruebaBoton(link) {
                 if (pagina < 6) {
                     pagina++;
                     pruebaBoton(`https://dragonball-api.com/api/characters?page=${pagina}&limit=${cantidad}`);
-                }
+                };
             };
             imprimirBotones.appendChild(siguiente);
 
@@ -192,13 +191,9 @@ function pruebaBoton(link) {
                 pruebaBoton(newUrl);
                 imprimirBotones.innerHTML = "";
             });
-
-            inicio.classList.add("btn");
-            final.classList.add("btn");
+        }).catch({
+            error: (error) => {console.error("No se pudo obtener la información de la API:", error)}
         })
-        .catch(error => {
-            console.error("No se pudo obtener la información de la API:", error);
-        });
 };
 
 pruebaBoton(link);
